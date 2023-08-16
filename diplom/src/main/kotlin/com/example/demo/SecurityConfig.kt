@@ -50,8 +50,9 @@ class SecurityConfig{
                 authorize("/analyze", permitAll)
             }
             formLogin {
-                loginPage = "/login"
+                loginPage = "/sign-in/login"
                 permitAll()
+                failureUrl = "/login?error"
                 defaultSuccessUrl("/private", true) // Перенаправление на /private после успешной аутентификации
             }
             logout {

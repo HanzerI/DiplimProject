@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.client.RestTemplate
+import com.example.demo.Tonality
+import com.example.demo.Tonality.Companion.toTonality
 
 @Controller
 class AnalysisController(private val restTemplate: RestTemplate) {
@@ -29,7 +31,7 @@ class AnalysisController(private val restTemplate: RestTemplate) {
         val request = HttpEntity(mapOf("texts" to texts.split("\n")), headers)
         val response: ResponseEntity<Map<*, *>> = restTemplate.postForEntity(url, request, Map::class.java)
         @Suppress("UNCHECKED_CAST")
-        val results = response.body?.get("results") as? Map<String, Map<String, Double>> ?: emptyMap()
+        val results = (response.body?.get("results") as? Map<String, String> ?: emptyMap()).mapValues { it.value.toTonality() }
         model.addAttribute("results", results)
         return "analysis"
     }

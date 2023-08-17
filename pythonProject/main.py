@@ -10,7 +10,14 @@ model = FastTextSocialNetworkModel(tokenizer=tokenizer)
 
 def analyze_text(text):
     result = model.predict([text], k=2)
-    return result[0]
+    categories = result[0].keys()
+
+    if 'positive' in categories and result[0]['positive'] > 0.5:
+        return 'positive'
+    elif 'negative' in categories and result[0]['negative'] > 0.5:
+        return 'negative'
+    else:
+        return 'neutral'
 
 
 @app.route('/analyze', methods=['POST'])
@@ -24,7 +31,8 @@ def analyze_endpoint():
 
         results = {}
         for text in texts:
-            results[text] = analyze_text(text)
+            result = analyze_text(text)
+            results[text] = result
 
         return jsonify({'results': results}), 200
     except Exception as e:

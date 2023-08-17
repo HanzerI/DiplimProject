@@ -1,5 +1,6 @@
 package com.example.demo.controllers
 
+import com.example.demo.Tonality.Companion.toTonality
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.client.RestTemplate
-import com.example.demo.Tonality.Companion.toTonality
+
 
 @Controller
 class AnalysisController(private val restTemplate: RestTemplate) {

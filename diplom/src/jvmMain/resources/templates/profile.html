@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+</head>
+<body>
+<h1>Welcome, <span th:text="${user.username}"></span>!</h1>
+
+<h2>Add Social Network Tokens</h2>
+<form th:action="@{/profile/add-tokens}" method="post">
+    <label for="vkToken">VKontakte Token:</label>
+    <input type="text" id="vkToken" name="vkToken">
+    <br>
+    <label for="telegramToken">Telegram Token:</label>
+    <input type="text" id="telegramToken" name="telegramToken">
+    <br>
+    <input type="submit" value="Add Tokens">
+</form>
+
+<a th:href="@{/logout}">Logout</a>
+</body>
+</html>

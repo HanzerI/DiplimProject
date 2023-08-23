@@ -48,9 +48,11 @@ class SecurityConfig{
                 authorize("/profile", hasRole("ROLE_USER"))
                 authorize("/analysis", permitAll)
                 authorize("/analyze", permitAll)
+                authorize("/auth", hasRole("ROLE_USER"))
+                authorize("/auth/vk", hasRole("ROLE_USER"))
             }
             formLogin {
-                loginPage = "/sign-in/login"
+                loginPage = "/login"
                 permitAll()
                 failureUrl = "/login?error"
                 defaultSuccessUrl("/private", true) // Перенаправление на /private после успешной аутентификации

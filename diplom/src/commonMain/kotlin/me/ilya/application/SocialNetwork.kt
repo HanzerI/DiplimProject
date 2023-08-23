@@ -1,4 +1,4 @@
-package me.ilya.application.sotial
+package me.ilya.application
 
 enum class SocialNetwork {
     VKONTAKTE,

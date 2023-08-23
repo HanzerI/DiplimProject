@@ -2,6 +2,7 @@ plugins {
     id("org.springframework.boot") version "3.1.2"
     id("io.spring.dependency-management") version "1.1.2"
     kotlin("plugin.spring") version "1.8.22"
+    kotlin("plugin.serialization") version "1.8.22"
     kotlin("multiplatform") version "1.9.0"
     id ("org.jetbrains.kotlin.plugin.allopen") version "1.9.0"
     id ("org.jetbrains.kotlin.plugin.jpa") version "1.9.0"
@@ -41,7 +42,12 @@ kotlin {
         }
     }
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting{
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+                //implementation ("jakarta.platform:jakarta.jakartaee-api")
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
@@ -49,6 +55,7 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
                 implementation("org.springframework.boot:spring-boot-starter")
                 implementation("org.jetbrains.kotlin:kotlin-reflect")
                 implementation("io.ktor:ktor-server-netty:2.0.2")
@@ -65,6 +72,8 @@ kotlin {
                 implementation("org.postgresql:postgresql")
                 implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
                 implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+                implementation("com.vk.api:sdk:1.0.14")
             }
         }
         val jvmTest by getting{
@@ -74,6 +83,7 @@ kotlin {
         }
         val jsMain by getting {
             dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react:18.2.0-pre.346")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:18.2.0-pre.346")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion:11.9.3-pre.346")

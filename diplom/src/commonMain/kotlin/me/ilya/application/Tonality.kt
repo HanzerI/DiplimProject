@@ -5,7 +5,7 @@ enum class Tonality {
     NEGATIVE,
     NEUTRAL;
     companion object {
-        @JvmStatic
+
         fun String.toTonality(): Tonality {
             return when (this) {
                 "positive" -> POSITIVE

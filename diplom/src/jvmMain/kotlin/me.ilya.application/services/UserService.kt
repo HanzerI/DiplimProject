@@ -1,21 +1,28 @@
 package me.ilya.application.services
 
 
+import me.ilya.application.SocialNetwork
+import me.ilya.application.entitys.Token
 import me.ilya.application.entitys.User
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import me.ilya.application.entitys.User.Companion.addToken
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
-import org.springframework.security.core.userdetails.User as SpringUser
 
 @Service
+@Component
 class UserService(val userRepository: UserRepository,val passwordEncoder: PasswordEncoder):UserDetailsService {
+
+    fun saveToken(username: String?, token: Token) {
+        val user = userRepository.findByUsername(username)
+        user?.addToken(token)
+        user?.let { userRepository.save(it) }
+    }
+
 
     fun createUser(user: User) {
         user.password = passwordEncoder.encode(user.password)
@@ -32,9 +39,9 @@ class UserService(val userRepository: UserRepository,val passwordEncoder: Passwo
 
     fun getAllUsers(): List<User> = userRepository.findAll()
 
-    fun saveUser(user: User) = userRepository.save(user)
+    fun saveUser(user: User): User = userRepository.save(user)
 
-    class CustomUserDetails(val user:User): UserDetails{
+    class CustomUserDetails(val user: User): UserDetails{
         override fun getAuthorities(): MutableCollection<out GrantedAuthority> = user.roles.map{SimpleGrantedAuthority(it)}.toMutableSet()
 
         override fun getPassword(): String = user.password

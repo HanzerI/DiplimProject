@@ -1,13 +1,14 @@
 package me.ilya.application.controllers
 
-import me.ilya.application.entitys.User
+
+
 import me.ilya.application.services.UserService
+import me.ilya.application.entitys.User
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
-import kotlin.reflect.KClass
 
 @Controller
 class RegistrationController(private val userService: UserService) {

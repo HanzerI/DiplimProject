@@ -27,10 +27,10 @@ class ProfileController(private val userService: UserService) {
 //        val user: UserDetails = userService.loadUserByUsername(username)
 //
 //        if (!vkToken.isNullOrEmpty()) {
-//            user.socialTokens[SocialNetwork.VKONTAKTE] = vkToken
+//            user.socialTokens[me.ilya.application.SocialNetwork.VKONTAKTE] = vkToken
 //        }
 //        if (!telegramToken.isNullOrEmpty()) {
-//            user.socialTokens[SocialNetwork.TELEGRAM] = telegramToken
+//            user.socialTokens[me.ilya.application.SocialNetwork.TELEGRAM] = telegramToken
 //        }
 //
 //        userService.saveUser(user)

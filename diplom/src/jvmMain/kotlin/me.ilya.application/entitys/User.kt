@@ -1,14 +1,14 @@
 package me.ilya.application.entitys
 
-
+import me.ilya.application.SocialNetwork
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
-import me.ilya.application.sotial.SocialNetwork
 
 @Entity
 @Table(name = "app_user")
+
 data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,32 +25,20 @@ data class User(
         message = "Password must be at least 8 characters long and contain at least one letter and one number"
     )
     var password: String,
-    @ElementCollection(fetch=FetchType.EAGER)
-    @CollectionTable(name = "user_social_tokens", joinColumns = [JoinColumn(name = "user_id")])
-    @MapKeyEnumerated(EnumType.STRING)
-    @MapKeyColumn(name = "social_network")
-    @Column(name = "token")
-    var socialTokens: MutableMap<SocialNetwork, String> = mutableMapOf(),
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+    private val tokens: MutableSet<Token> = mutableSetOf(),
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = [JoinColumn(name = "user_id")])
     @Column(name = "role")
-    var roles: MutableSet<String> = HashSet()
-) { constructor(user: User) : this(user.id, user.username, user.email, user.password, user.socialTokens, user.roles)
+     var roles: MutableSet<String> = HashSet()
+) { constructor(user: User) : this(user.id, user.username, user.email, user.password, user.tokens, user.roles)
+    companion object{
+        @JvmStatic
+         fun User.addToken(token: Token) {
+            tokens.add(token)
+            token.user = this
+        }
 
-    override fun equals(other: Any?): Boolean {
-        if (other !is User) return false
-        return (username != other.username && email != other.email)
     }
-
-    override fun hashCode(): Int {
-        var result = username.hashCode()
-        result = 31 * result + email.hashCode()
-        return result
-    }
-
-    override fun toString(): String {
-        return "User(id=$id, username='$username', email='$email')"
-    }
-
 }
 

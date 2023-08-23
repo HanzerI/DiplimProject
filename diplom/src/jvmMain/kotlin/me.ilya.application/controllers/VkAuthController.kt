@@ -36,7 +36,7 @@ class VkAuthController(val userService: UserService) {
 
     @GetMapping("/vk/callback")
     fun vkAuthCallback(@RequestParam("code") code: String): String {
-        val clientId = 51733161
+        val clientId = 0
         val clientSecret = ""
         val redirectUri = "" // Укажите ваш Callback URI
         val transportClient: TransportClient = HttpTransportClient()

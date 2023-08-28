@@ -5,10 +5,9 @@
     <title>User Profile</title>
 </head>
 <body>
-<h1>Welcome, <span th:text="${param.name}"></span>!</h1>
+<h1>Welcome, <span th:text="${user}"></span>!</h1>
 
 <h2>Add Social Network Tokens</h2>
-
 
 <a th:href="@{/logout}">Logout</a>
 </body>

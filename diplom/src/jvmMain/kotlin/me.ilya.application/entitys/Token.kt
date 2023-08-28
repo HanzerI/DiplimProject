@@ -17,4 +17,15 @@ class Token(
 
     @Enumerated(EnumType.STRING)
     var socialNetwork: SocialNetwork
-)
+
+) {
+    override fun equals(other: Any?): Boolean {
+        if (other !is Token) return  false
+        if (this === other) return true
+        return socialNetwork == other.socialNetwork
+    }
+
+    override fun hashCode(): Int {
+        return socialNetwork.hashCode()
+    }
+}

@@ -1,11 +1,12 @@
 plugins {
     id("org.springframework.boot") version "3.1.2"
     id("io.spring.dependency-management") version "1.1.2"
-    kotlin("plugin.spring") version "1.8.22"
-    kotlin("plugin.serialization") version "1.8.22"
+    kotlin("plugin.spring")  version "1.9.0"
+    kotlin("plugin.serialization")  version "1.9.0"
     kotlin("multiplatform") version "1.9.0"
     id ("org.jetbrains.kotlin.plugin.allopen") version "1.9.0"
     id ("org.jetbrains.kotlin.plugin.jpa") version "1.9.0"
+   // id("org.jetbrains.kotlin.js") version "1.9.0"
     application
 }
 
@@ -55,7 +56,7 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
                 implementation("org.springframework.boot:spring-boot-starter")
                 implementation("org.jetbrains.kotlin:kotlin-reflect")
                 implementation("io.ktor:ktor-server-netty:2.0.2")
@@ -83,15 +84,47 @@ kotlin {
         }
         val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react:18.2.0-pre.346")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:18.2.0-pre.346")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion:11.9.3-pre.346")
+
+
+                implementation(npm("react", "18.2.0"))
+
+                implementation(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.430"))
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
+                implementation(npm("react-player", "2.12.0"))
+                implementation(npm("react-share", "4.4.1"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+                implementation(kotlin("stdlib-js"))
+                implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.8.0")
+
+//                val kotlinWrappersVersion = "1.0.0-pre.620"
+//                implementation(platform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:$kotlinWrappersVersion"))
+//                implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
+//                implementation("org.jetbrains.kotlin-wrappers:kotlin-react")
+//                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
+//                implementation("org.jetbrains.kotlin-wrappers:kotlin-tanstack-react-table")
             }
         }
         val jsTest by getting
     }
 }
+
+kotlin {
+    js(IR) {
+        browser {
+            webpackTask {
+                output.libraryTarget = "umd"
+            }
+            binaries.executable()
+        }
+    }
+}
+
+
 
 application {
     mainClass.set("me.ilya.application.DemoApplicationKt")
@@ -105,4 +138,13 @@ tasks.named<Copy>("jvmProcessResources") {
 tasks.named<JavaExec>("run") {
     dependsOn(tasks.named<Jar>("jvmJar"))
     classpath(tasks.named<Jar>("jvmJar"))
+}
+
+tasks.register("runFrontend") {
+    doLast {
+        exec {
+            workingDir = file("build/js/packages/diplimP")
+            commandLine("node", "bundle.js")
+        }
+    }
 }

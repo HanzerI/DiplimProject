@@ -24,8 +24,8 @@ class VkAuthController(val userService: UserService) {
 
     @GetMapping("/vk")
     fun vkAuthRedirect(): RedirectView {
-        val clientId = 51733161
-        val redirectUri = "http://92.43.7.81:8081/auth/vk/callback" // Укажите ваш Callback URI
+        val clientId = 0
+        val redirectUri = "" // Укажите ваш Callback URI
         val vkAuthUrl = "https://oauth.vk.com/authorize?" +
                 "client_id=$clientId" +
                 "&redirect_uri=$redirectUri" +
@@ -36,9 +36,9 @@ class VkAuthController(val userService: UserService) {
 
     @GetMapping("/vk/callback")
     fun vkAuthCallback(@RequestParam("code") code: String): String {
-        val clientId = 51733161
-        val clientSecret = "5I0bkTyEP8CgN0kF3FfL"
-        val redirectUri = "http://92.43.7.81:8081/auth/vk/callback" // Укажите ваш Callback URI
+        val clientId = 0
+        val clientSecret = ""
+        val redirectUri = "" // Укажите ваш Callback URI
         val transportClient: TransportClient = HttpTransportClient()
         val vk = VkApiClient(transportClient)
         val authentication = SecurityContextHolder.getContext().authentication
@@ -55,7 +55,7 @@ class VkAuthController(val userService: UserService) {
         val user = vk.users().get(userActor).execute()[0]
         val fullName = "${user.firstName} ${user.lastName}"
         val encodedFullName = URLEncoder.encode(fullName, "UTF-8")
-        return "redirect:/profile"
+        return "redirect:/profile?name=$encodedFullName"
     }
 }
 

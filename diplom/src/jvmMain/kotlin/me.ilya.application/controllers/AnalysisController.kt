@@ -30,7 +30,7 @@ class AnalysisController(private val restTemplate: RestTemplate) {
 //}
 //
 //@PostMapping("/analysis")
-//fun analyzeTexts(@RequestParam("texts",@RequestBody data: Map<String, Any>)) texts: String, model: Model): String {
+//fun analyzeTexts(@RequestParam("texts") texts: String, model: Model): String {
 //    val url = "http://localhost:5000/analyze"
 //    val headers = HttpHeaders()
 //    headers.contentType = MediaType.APPLICATION_JSON

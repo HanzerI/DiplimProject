@@ -29,10 +29,9 @@ def analyze_endpoint():
         if not texts:
             return jsonify({'error': 'No texts provided'}), 400
 
-        results = []
+        results = dict([])
         for text in texts:
-            result = analyze_text(text)
-            results.append(result)
+            results[text] = analyze_text(text)
 
         return jsonify({'results': results}), 200
     except Exception as e:
